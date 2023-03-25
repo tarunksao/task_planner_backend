@@ -1,16 +1,16 @@
 const express = require('express');
-const { TaskModel } = require('../Models/task.model');
+const { SprintModel } = require('../Models/sprint.model');
 
 const app = express.Router();
 app.use(express.json());
 
 app.get('/', async (req, res) => {
     try{
-        let allTasks = await TaskModel.find();
-        if (allTasks.length>0) {
-            res.status(200).send({message:'Here is the list of all the Tasks', allTasks});
+        let allSprints = await SprintModel.find();
+        if (allSprints.length>0) {
+            res.status(200).send({message:'Here is the list of all the Sprints', allSprints});
         } else {
-            res.send({message:'Sorry!!! We do not have any tasks, Please add one'});
+            res.send({message:'Sorry!!! We do not have any Sprints, Please add one'});
         }
     } catch (err) {
         res.status(400).send({message:'Something went wrong', err});
@@ -20,9 +20,9 @@ app.get('/', async (req, res) => {
 app.post('/', async (req,res) => {
     const payload = req.body;
     try {
-        const newTask = new TaskModel(payload);
-        await newTask.save();
-        res.status(201).send({message:'Task Created Successfully', newTask});
+        const newSprint = new SprintModel(payload);
+        await newSprint.save();
+        res.status(201).send({message:'Sprint Created Successfully', newSprint});
     } catch (err) {
         res.status(400).send({message:'Something went wrong', err});
     }
@@ -33,8 +33,8 @@ app.patch('/:id', async (req,res) => {
     const payload = req.body;
 
     try{
-        const updateTask = await TaskModel.findByIdAndUpdate({_id:id}, payload);
-        res.status(204).send({message:`Task with ID:- ${id} has been updated`});
+        const updateSprint = await SprintModel.findByIdAndUpdate({_id:id}, payload);
+        res.status(204).send({message:`Sprint with ID:- ${id} has been updated`});
     } catch (err) {
         res.status(400).send({message:'Something went wrong', err});
     }
@@ -44,8 +44,8 @@ app.delete('/:id', async (req,res) => {
     const {id} = req.params;
 
     try{
-        const deleteTask = await TaskModel.findByIdAndDelete({_id:id});
-        res.status(202).send({message:`Task with ID:- ${id} has been deleted`});
+        const deleteSprint = await SprintModel.findByIdAndDelete({_id:id});
+        res.status(202).send({message:`Sprint with ID:- ${id} has been deleted`});
     } catch (err) {
         res.status(400).send({message:'Something went wrong', err});
     }
