@@ -6,7 +6,7 @@ app.use(express.json());
 
 app.get('/', async (req, res) => {
     try{
-        let allSprints = await SprintModel.find();
+        let allSprints = await SprintModel.find().populate('tasks');
         if (allSprints.length>0) {
             res.status(200).send({message:'Here is the list of all the Sprints', allSprints});
         } else {
